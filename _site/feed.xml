@@ -1,1 +1,137 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2020-09-10T17:36:52+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyeonguk Bahk’s Blog</title><subtitle>A demo blog.</subtitle><author><name>박형욱 Hyeonuk Bahk</name><email>bahkhyeonguk@gmail.com</email></author><entry><title type="html">The First Post</title><link href="http://localhost:4000/etc/hello-world/" rel="alternate" type="text/html" title="The First Post" /><published>2020-09-10T00:00:00+09:00</published><updated>2020-09-10T00:00:00+09:00</updated><id>http://localhost:4000/etc/hello-world</id><content type="html" xml:base="http://localhost:4000/etc/hello-world/">&lt;p&gt;Hello, World!&lt;/p&gt;</content><author><name>박형욱 Hyeonuk Bahk</name><email>bahkhyeonguk@gmail.com</email></author><category term="first" /><summary type="html">Hello, World!</summary></entry></feed>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2021-03-12T13:59:00+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyeonguk Bahk’s Blog</title><subtitle>A demo blog.</subtitle><author><name>박형욱 Hyeonuk Bahk</name><email>bahkhyeonguk@gmail.com</email></author><entry><title type="html">특정한 확률 분포를 따르는 난수 생성하기</title><link href="http://localhost:4000/etc/random-number-generation/" rel="alternate" type="text/html" title="특정한 확률 분포를 따르는 난수 생성하기" /><published>2021-01-26T00:00:00+09:00</published><updated>2021-03-12T01:00:00+09:00</updated><id>http://localhost:4000/etc/random-number-generation</id><content type="html" xml:base="http://localhost:4000/etc/random-number-generation/">&lt;h2 id=&quot;random-number-generation-with-a-specific-probability-distribution&quot;&gt;Random Number Generation With A Specific Probability Distribution.&lt;/h2&gt;
+
+&lt;p&gt;난수 생성은 여러가지 pseudo-random number generation 알고리즘으로 만들어진 다양한 라이브러리를 통해서 쉽게 할 수 있다. Python의 경우 NumPy의 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;random&lt;/code&gt; 패키지를 이용하면 균등한 확률분포를 따르는 난수와 정규분포를 따르는 난수 등을 생성할 수 있다. 그런데 이러한 라이브러리에 없는 확률분포를 따르는 난수를 생성해야할 경우가 있을 것인데, 이 경우에는 어떤 과정을 통해 원하는 난수를 얻을 수 있는지 살펴보자.&lt;/p&gt;
+
+&lt;h1 id=&quot;uniform-sample&quot;&gt;Uniform Sample&lt;/h1&gt;
+
+&lt;p&gt;난수가 주어진 두 수 $a$, $b$사이의 값을 가지며 균일하게 분포하는 경우를 uniform sample이라 한다. 다음과 같이 Python의 NumPy 라이브러리를 이용하여 uniform한 난수를 얻을 수 있다.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# uniform sampling in range from 0 to 1, with 10000 samples
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform_sample&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rand&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform_sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;marker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'k'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Uniform Sample'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ylabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'u'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/post/2021-01-26/output_1_1.png&quot; alt=&quot;png&quot; class=&quot;align-center open-new&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;0과 1사이의 값을 가지는 uniform sample을 $u$라고 하자. 이 $u$가 0과 1사이의 값을 가지기 때문에, $u$를 어떤 값의 확률로 해석할 수 있을 것이다. 만약 어떠한 확률변수 $X$가 특정한 값 $x$보다 작을 확률 $P(-\infty \le X \le x)$을 $u$로 놓고, $u$값과 $X$의 확률분포로부터 $x$를 얻는 함수를 얻는다면, $X$의 확률분포를 따르는 난수 $x$를 $u$로부터 얻을 수 있다. 결과적으로 $u$로부터 $x$를 얻는 함수는&lt;/p&gt;
+
+&lt;p&gt;\begin{equation}
+x = F^{-1}(u)
+\end{equation}&lt;/p&gt;
+
+\[F(x) = \int f(x)dx\]
+
+\[f(x) \text{는  } X\text{의  확률밀도함수}\]
+
+&lt;p&gt;예를 들어, $P(X)$가 표준정규분포(normal distribution)라면 $u$값에 대응하는 $x$값은 다음과 같다.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;$u$&lt;/th&gt;
+      &lt;th&gt;\(y = F^{-1}(u)\)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.5&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.975&lt;/td&gt;
+      &lt;td&gt;1.95996&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.995&lt;/td&gt;
+      &lt;td&gt;2.5758&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0.999999&lt;/td&gt;
+      &lt;td&gt;4.75342&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1-2^{-52}&lt;/td&gt;
+      &lt;td&gt;8.12589&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;수학적-풀이&quot;&gt;수학적 풀이&lt;/h2&gt;
+&lt;p&gt;uniform distribution을 따르는 random variable $X$의 확률밀도함수(probability density distribution, pdf)가 다음과 같을 때를 생각해 보자.&lt;/p&gt;
+
+&lt;p&gt;\begin{equation}
+f(x) = \begin{cases}
+1, &amp;amp; \text{if $0 \le x \le 1$.} \newline
+0, &amp;amp; \text{otherwise.}
+\end{cases}
+\end{equation}&lt;/p&gt;
+
+\[\int_{-\infty}^{\infty} f(x) = 1\]
+
+&lt;p&gt;그렇다면 다음이 성립한다.&lt;/p&gt;
+
+\[P(a \le X \lt b) = \int_{a}^{b} f(x)dx\]
+
+&lt;p&gt;random variable의 함수는 그 자체로 random variable이고 $y$가 어떠한 변환 함수 $y(X)$에서 나온다면, $Y = y(X)$는 X로부터 유도된 random variable이 된다. $X=a$일 때는 $Y=y(a)$, $X=b$일 때는 $Y=y(b)$인 식이다.
+간단히 이해하기 쉽도록 $y$를 단조 증가함수라고 가정해 보면, $a \le X \lt b$라면 $y(a) \le Y \lt y(b)$일 것이고, 따라서 $P(a \le X \lt b) = P(y(a) \le Y \lt y(b))$일 것이다.
+그러므로&lt;/p&gt;
+
+\[P(y(a) \le Y \lt y(b)) = P(a \le X \lt b) = \int_{a}^{b} f(x)dx = \int_{y(a)}^{y(b)} f(x(y))\frac{dx}{dy}dy\]
+
+&lt;p&gt;이고, $Y$의 pdf 를 $g(y)$라 하면&lt;/p&gt;
+
+\[P(y(a) \le Y \lt y(b)) = \int_{y(a)}^{y(b)} f(x(y))\frac{dx}{dy}dx = \int_{y(a)}^{y(b)} g(y)dy\]
+
+&lt;p&gt;즉 $g(y) = f(x)\frac{dx}{dy} = \frac{dx}{dy}$, 또는,&lt;/p&gt;
+
+\[x = \int g(y)dy \Rightarrow x=G(y)\]
+
+\[y = G^{-1}(x)\]
+
+&lt;p&gt;가 되어 $g(y)$인 pdf를 따르는 random variable $Y$를 uniform distribution을 따르는 $X$로부터 얻을 수 있는 것이다.&lt;/p&gt;
+
+&lt;h2 id=&quot;예시---exponential-deviates&quot;&gt;예시 - Exponential Deviates&lt;/h2&gt;
+
+&lt;p&gt;pdf가 $f(y) = \lambda e^{-\lambda y}$ ($\lambda \gt 0$는 y의 평균값이다) 일 때, uniform random variable $X$로부터 $Y = y(X)$를 구해보자. 먼저 $F(y) = \int f(y)dy$를 구하면&lt;/p&gt;
+
+\[F(y) = \int_{0}^{y} f(y)dy = 1-e^{-\lambda y} = x\]
+
+&lt;p&gt;따라서&lt;/p&gt;
+
+\[y(x) = F^{-1}(x) = -\frac{\ln(1-x)}{\lambda}\text{,  or  } -\frac{\ln(x)}{\lambda}\]
+
+&lt;p&gt;로 uniform deviate $x$로부터 exponetial distribution을 따르는 $y$를 얻었다.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Lambda&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;2.0&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform_sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lambda&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;marker&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'.'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;''&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'k'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Exponential Deviates'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ylabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'y'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/post/2021-01-26/output_4_1.png&quot; alt=&quot;png&quot; class=&quot;align-center open-new&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;arange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;fx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Lambda&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lambda&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;figure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bins&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;density&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'r'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'Histogram of Y'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ylabel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'P'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/images/post/2021-01-26/output_5_1.png&quot; alt=&quot;png&quot; class=&quot;align-center open-new&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;문제점&quot;&gt;문제점&lt;/h2&gt;
+
+&lt;p&gt;위의 방법으로 원하는 확률분포를 따르는 난수를 생성하려면 해당 pdf를 적분해 누적확률분포(cumulative distribution function, cdf)를 얻어야 하고 이 cdf에 역함수를 구해야 한다. discrete한 확률분포의 경우 이는 컴퓨터로 계산하기 어렵지 않지만, pdf가 연속함수인 경우에는 해석적으로 적분이 안되는 경우가 많다. 이러한 경우 위의 uniform sample을 이용하는 방법에서 더 나아가 rejection sampling과 같은 방법을 쓴다고 한다(이 방법은 아직 알아보지 않아서 나중에…). 또한 Gaussian 분포의 경우 Box-Muller 방법을 사용해 두 개의 uniform random variable로부터 두 개의 random gaussian variable을 얻을 수 있다.&lt;/p&gt;</content><author><name>박형욱 Hyeonuk Bahk</name><email>bahkhyeonguk@gmail.com</email></author><category term="random number" /><category term="practice" /><category term="basic" /><summary type="html">Random Number Generation With A Specific Probability Distribution.</summary></entry><entry><title type="html">The First Post</title><link href="http://localhost:4000/etc/hello-world/" rel="alternate" type="text/html" title="The First Post" /><published>2020-09-10T00:00:00+09:00</published><updated>2020-09-10T00:00:00+09:00</updated><id>http://localhost:4000/etc/hello-world</id><content type="html" xml:base="http://localhost:4000/etc/hello-world/">&lt;p&gt;Hello, World!&lt;/p&gt;</content><author><name>박형욱 Hyeonuk Bahk</name><email>bahkhyeonguk@gmail.com</email></author><category term="first" /><summary type="html">Hello, World!</summary></entry></feed>

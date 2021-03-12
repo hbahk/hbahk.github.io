@@ -1,0 +1,724 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.20.2 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>특정한 확률 분포를 따르는 난수 생성하기 - Hyeonguk Bahk’s Blog</title>
+<meta name="description" content="난수를 생성할 때 원하는 확률 분포를 따르는 난수를 만드는 방법론에 대한 설명.">
+
+
+  <meta name="author" content="박형욱 Hyeonuk Bahk">
+  
+  <meta property="article:author" content="박형욱 Hyeonuk Bahk">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Hyeonguk Bahk's Blog">
+<meta property="og:title" content="특정한 확률 분포를 따르는 난수 생성하기">
+<meta property="og:url" content="http://localhost:4000/etc/random-number-generation/">
+
+
+  <meta property="og:description" content="난수를 생성할 때 원하는 확률 분포를 따르는 난수를 만드는 방법론에 대한 설명.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-01-26T00:00:00+09:00">
+
+
+
+  <meta property="article:modified_time" content="2021-03-12T01:00:00+09:00">
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/etc/random-number-generation/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Hyeonuk Bahk",
+      "url": "http://localhost:4000/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Hyeonguk Bahk's Blog Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Hyeonguk Bahk's Blog
+          <span class="site-subtitle">박형욱의 블로그</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/categories/">Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/">About</a>
+            </li><li class="masthead__menu-item">
+              <a href="/posts/">Annual Posts</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#etc" itemprop="item"><span itemprop="name">Etc</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">특정한 확률 분포를 따르는 난수 생성하기</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/images/bio-photo.jpg" alt="박형욱 Hyeonuk Bahk" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">박형욱 Hyeonuk Bahk</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>An undergraduate student of the SNU. <br /> Astronomy major.</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">South Korea</span>
+        </li>
+      
+
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            <li><a href="https://github.com/hbahk" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:bahkhyeonguk@gmail.com">
+            <meta itemprop="email" content="bahkhyeonguk@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="특정한 확률 분포를 따르는 난수 생성하기">
+    <meta itemprop="description" content="Random Number Generation With A Specific Probability Distribution.">
+    <meta itemprop="datePublished" content="2021-01-26T00:00:00+09:00">
+    <meta itemprop="dateModified" content="2021-03-12T01:00:00+09:00">
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">특정한 확률 분포를 따르는 난수 생성하기
+</h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 목차</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#random-number-generation-with-a-specific-probability-distribution">Random Number Generation With A Specific Probability Distribution.</a></li>
+  <li><a href="#수학적-풀이">수학적 풀이</a></li>
+  <li><a href="#예시---exponential-deviates">예시 - Exponential Deviates</a></li>
+  <li><a href="#문제점">문제점</a></li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <h2 id="random-number-generation-with-a-specific-probability-distribution">Random Number Generation With A Specific Probability Distribution.</h2>
+
+<p>난수 생성은 여러가지 pseudo-random number generation 알고리즘으로 만들어진 다양한 라이브러리를 통해서 쉽게 할 수 있다. Python의 경우 NumPy의 <code class="language-plaintext highlighter-rouge">random</code> 패키지를 이용하면 균등한 확률분포를 따르는 난수와 정규분포를 따르는 난수 등을 생성할 수 있다. 그런데 이러한 라이브러리에 없는 확률분포를 따르는 난수를 생성해야할 경우가 있을 것인데, 이 경우에는 어떤 과정을 통해 원하는 난수를 얻을 수 있는지 살펴보자.</p>
+
+<h1 id="uniform-sample">Uniform Sample</h1>
+
+<p>난수가 주어진 두 수 $a$, $b$사이의 값을 가지며 균일하게 분포하는 경우를 uniform sample이라 한다. 다음과 같이 Python의 NumPy 라이브러리를 이용하여 uniform한 난수를 얻을 수 있다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># uniform sampling in range from 0 to 1, with 10000 samples
+</span><span class="n">uniform_sample</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">uniform_sample</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'.'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'k'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Uniform Sample'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'u'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="http://localhost:4000/assets/images/post/2021-01-26/output_1_1.png" alt="png" class="align-center open-new" /></p>
+
+<p>0과 1사이의 값을 가지는 uniform sample을 $u$라고 하자. 이 $u$가 0과 1사이의 값을 가지기 때문에, $u$를 어떤 값의 확률로 해석할 수 있을 것이다. 만약 어떠한 확률변수 $X$가 특정한 값 $x$보다 작을 확률 $P(-\infty \le X \le x)$을 $u$로 놓고, $u$값과 $X$의 확률분포로부터 $x$를 얻는 함수를 얻는다면, $X$의 확률분포를 따르는 난수 $x$를 $u$로부터 얻을 수 있다. 결과적으로 $u$로부터 $x$를 얻는 함수는</p>
+
+<p>\begin{equation}
+x = F^{-1}(u)
+\end{equation}</p>
+
+\[F(x) = \int f(x)dx\]
+
+\[f(x) \text{는  } X\text{의  확률밀도함수}\]
+
+<p>예를 들어, $P(X)$가 표준정규분포(normal distribution)라면 $u$값에 대응하는 $x$값은 다음과 같다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>$u$</th>
+      <th>\(y = F^{-1}(u)\)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0.5</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0.975</td>
+      <td>1.95996</td>
+    </tr>
+    <tr>
+      <td>0.995</td>
+      <td>2.5758</td>
+    </tr>
+    <tr>
+      <td>0.999999</td>
+      <td>4.75342</td>
+    </tr>
+    <tr>
+      <td>1-2^{-52}</td>
+      <td>8.12589</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="수학적-풀이">수학적 풀이</h2>
+<p>uniform distribution을 따르는 random variable $X$의 확률밀도함수(probability density distribution, pdf)가 다음과 같을 때를 생각해 보자.</p>
+
+<p>\begin{equation}
+f(x) = \begin{cases}
+1, &amp; \text{if $0 \le x \le 1$.} \newline
+0, &amp; \text{otherwise.}
+\end{cases}
+\end{equation}</p>
+
+\[\int_{-\infty}^{\infty} f(x) = 1\]
+
+<p>그렇다면 다음이 성립한다.</p>
+
+\[P(a \le X \lt b) = \int_{a}^{b} f(x)dx\]
+
+<p>random variable의 함수는 그 자체로 random variable이고 $y$가 어떠한 변환 함수 $y(X)$에서 나온다면, $Y = y(X)$는 X로부터 유도된 random variable이 된다. $X=a$일 때는 $Y=y(a)$, $X=b$일 때는 $Y=y(b)$인 식이다.
+간단히 이해하기 쉽도록 $y$를 단조 증가함수라고 가정해 보면, $a \le X \lt b$라면 $y(a) \le Y \lt y(b)$일 것이고, 따라서 $P(a \le X \lt b) = P(y(a) \le Y \lt y(b))$일 것이다.
+그러므로</p>
+
+\[P(y(a) \le Y \lt y(b)) = P(a \le X \lt b) = \int_{a}^{b} f(x)dx = \int_{y(a)}^{y(b)} f(x(y))\frac{dx}{dy}dy\]
+
+<p>이고, $Y$의 pdf 를 $g(y)$라 하면</p>
+
+\[P(y(a) \le Y \lt y(b)) = \int_{y(a)}^{y(b)} f(x(y))\frac{dx}{dy}dx = \int_{y(a)}^{y(b)} g(y)dy\]
+
+<p>즉 $g(y) = f(x)\frac{dx}{dy} = \frac{dx}{dy}$, 또는,</p>
+
+\[x = \int g(y)dy \Rightarrow x=G(y)\]
+
+\[y = G^{-1}(x)\]
+
+<p>가 되어 $g(y)$인 pdf를 따르는 random variable $Y$를 uniform distribution을 따르는 $X$로부터 얻을 수 있는 것이다.</p>
+
+<h2 id="예시---exponential-deviates">예시 - Exponential Deviates</h2>
+
+<p>pdf가 $f(y) = \lambda e^{-\lambda y}$ ($\lambda \gt 0$는 y의 평균값이다) 일 때, uniform random variable $X$로부터 $Y = y(X)$를 구해보자. 먼저 $F(y) = \int f(y)dy$를 구하면</p>
+
+\[F(y) = \int_{0}^{y} f(y)dy = 1-e^{-\lambda y} = x\]
+
+<p>따라서</p>
+
+\[y(x) = F^{-1}(x) = -\frac{\ln(1-x)}{\lambda}\text{,  or  } -\frac{\ln(x)}{\lambda}\]
+
+<p>로 uniform deviate $x$로부터 exponetial distribution을 따르는 $y$를 얻었다.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Lambda</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">uniform_sample</span><span class="p">)</span><span class="o">/</span><span class="n">Lambda</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">'.'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s">''</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'k'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Exponential Deviates'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'y'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="http://localhost:4000/assets/images/post/2021-01-26/output_4_1.png" alt="png" class="align-center open-new" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">np</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">fx</span> <span class="o">=</span> <span class="n">Lambda</span> <span class="o">*</span> <span class="n">np</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Lambda</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">hist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s">'r'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Histogram of Y'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'P'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="http://localhost:4000/assets/images/post/2021-01-26/output_5_1.png" alt="png" class="align-center open-new" /></p>
+
+<h2 id="문제점">문제점</h2>
+
+<p>위의 방법으로 원하는 확률분포를 따르는 난수를 생성하려면 해당 pdf를 적분해 누적확률분포(cumulative distribution function, cdf)를 얻어야 하고 이 cdf에 역함수를 구해야 한다. discrete한 확률분포의 경우 이는 컴퓨터로 계산하기 어렵지 않지만, pdf가 연속함수인 경우에는 해석적으로 적분이 안되는 경우가 많다. 이러한 경우 위의 uniform sample을 이용하는 방법에서 더 나아가 rejection sampling과 같은 방법을 쓴다고 한다(이 방법은 아직 알아보지 않아서 나중에…). 또한 Gaussian 분포의 경우 Box-Muller 방법을 사용해 두 개의 uniform random variable로부터 두 개의 random gaussian variable을 얻을 수 있다.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#basic" class="page__taxonomy-item" rel="tag">basic</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#practice" class="page__taxonomy-item" rel="tag">practice</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#random-number" class="page__taxonomy-item" rel="tag">random number</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#etc" class="page__taxonomy-item" rel="tag">etc</a>
+    
+    </span>
+  </p>
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-03-12">March 12, 2021</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%ED%8A%B9%EC%A0%95%ED%95%9C+%ED%99%95%EB%A5%A0+%EB%B6%84%ED%8F%AC%EB%A5%BC+%EB%94%B0%EB%A5%B4%EB%8A%94+%EB%82%9C%EC%88%98+%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0%20http%3A%2F%2Flocalhost%3A4000%2Fetc%2Frandom-number-generation%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fetc%2Frandom-number-generation%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fetc%2Frandom-number-generation%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/etc/hello-world/" class="pagination--pager" title="The First Post
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You may also enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/etc/hello-world/" rel="permalink">The First Post
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello, World!
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+          <li><a href="https://github.com/hbahk" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Hyeonuk Bahk. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" async
+	src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({
+     extensions: ["tex2jax.js"],
+     jax: ["input/TeX", "output/HTML-CSS"],
+     tex2jax: {
+       inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+       displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+       processEscapes: true
+     },
+     "HTML-CSS": { availableFonts: ["TeX"] }
+   });
+</script>
+
+
+  </body>
+</html>
