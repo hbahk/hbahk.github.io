@@ -1,6 +1,8 @@
 ---
 title: 특정한 확률 분포를 따르는 난수 생성하기
 layout: single
+date: 2021-01-26
+show_date: true
 author_profile: true
 read_time: true
 comments: true

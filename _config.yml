@@ -275,10 +275,14 @@ defaults:
     values:
       layout: single
       author_profile: true
+      show_date: true
       read_time: true
       comments: true
       share: true
       related: true
+      toc: true
+      toc_sticky: true
+      toc_label: 'Table of Contents'
 
   # _pages
   - scope:
