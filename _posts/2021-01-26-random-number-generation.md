@@ -22,7 +22,9 @@ tags:
 article_section: etc
 meta_keywords: practice,random number, programming,basic
 last_modified_at: 2021-03-12T00:00:00+08:00
-header: /assets/images/post/2021-01-26/output_1_1.png
+header:
+  image: /assets/images/post/2021-01-26/output_4_1.png
+  teaser: /assets/images/post/2021-01-26/output_4_1.png
 ---
 
 
